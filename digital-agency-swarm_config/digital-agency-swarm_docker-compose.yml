@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  digital-agency-swarm:
+    image: tiangolo/uvicorn-gunicorn-fastapi:python3.10
+    restart: always
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./app:/app
+    environment:
+      - APP_MODULE=main:app
+      - PORT=8000
+

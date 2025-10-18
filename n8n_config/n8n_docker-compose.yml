@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  n8n:
+    image: n8n.io/n8n
+    restart: always
+    ports:
+      - '5678:5678'
+    volumes:
+      - n8n_data:/home/node/.n8n
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - N8N_BASIC_AUTH_ACTIVE=false
+      - N8N_EDITOR_BASE_URL=http://localhost:5678/
+      - N8N_DATA_FOLDER=/home/node/.n8n
+      - N8N_WEBHOOK_URL=http://72.61.158.55:5678/
+
+volumes:
+  n8n_data:
+
