@@ -1,0 +1,138 @@
+================================================================================
+PROMPT PER COMET.AI - DAMMI ACCESSO COMPLETO AL PROGETTO
+================================================================================
+
+OBIETTIVO: Voglio che Claude AI abbia accesso completo per vedere e modificare
+la configurazione OAuth nel progetto waipro-agency.
+
+================================================================================
+OPZIONE 1: REPORTA CONFIGURAZIONE COMPLETA (CONSIGLIATO)
+================================================================================
+
+Comet, accedi alla console Google Cloud e riportami ESATTAMENTE cosa c'è
+configurato. Così Claude può dirti esattamente cosa modificare.
+
+TASK PER COMET:
+
+1. Vai a: https://console.cloud.google.com/apis/credentials?project=waipro-agency
+
+2. Nella sezione "OAuth 2.0 Client IDs", dimmi:
+   - Quanti client OAuth ci sono?
+   - Per ogni client, dimmi il nome
+
+3. Per il client OAuth usato per nonamebar.it (probabilmente chiamato
+   "Web client" o "nonamebar" o simile), clicca sul nome e riportami:
+
+   A. Nome del client:
+   B. Client ID (tutto):
+   C. Client Secret (primi 10 caratteri):
+   D. Authorized JavaScript origins (TUTTI gli URI elencati):
+   E. Authorized redirect URIs (TUTTI gli URI elencati):
+
+4. Verifica anche:
+   - C'è il redirect URI https://app.base44.com/api/apps/auth/callback ?
+   - Se SI: quale posizione nella lista? (primo, secondo, etc.)
+   - Se NO: questo è il problema!
+
+5. Riportami TUTTO sopra in un messaggio, così Claude può dirti il fix esatto.
+
+================================================================================
+OPZIONE 2: AGGIUNGI UTENTE OWNER (SE SERVE ACCESSO REALE)
+================================================================================
+
+Se Claude ha bisogno di accesso diretto al progetto per operazioni avanzate:
+
+TASK PER COMET:
+
+1. Vai a: https://console.cloud.google.com/iam-admin/iam?project=waipro-agency
+
+2. Clicca "+ GRANT ACCESS" in alto
+
+3. Nel campo "New principals", aggiungi questo email:
+   [L'UTENTE DEVE FORNIRE UN EMAIL TEMPORANEO QUI]
+
+4. In "Select a role", cerca e seleziona: "Owner"
+
+5. Clicca "SAVE"
+
+6. Conferma che l'utente è stato aggiunto alla lista con ruolo Owner
+
+7. L'utente mi fornirà poi le credenziali di questo account temporaneo
+
+================================================================================
+OPZIONE 3: FIX DIRETTO (SE COMET PUÒ MODIFICARE)
+================================================================================
+
+Se Comet può fare modifiche dirette, fai questo:
+
+TASK PER COMET:
+
+1. Vai a: https://console.cloud.google.com/apis/credentials?project=waipro-agency
+
+2. Clicca sul client OAuth per nonamebar.it
+
+3. Scorri alla sezione "Authorized redirect URIs"
+
+4. Verifica se c'è ESATTAMENTE questo URI:
+   https://app.base44.com/api/apps/auth/callback
+
+5. Se NON c'è:
+   - Clicca "+ ADD URI"
+   - Incolla: https://app.base44.com/api/apps/auth/callback
+   - Clicca "SAVE" in fondo alla pagina
+
+6. Se c'è ma ci sono ALTRI URI strani (tipo nonamebar.it/callback):
+   - Rimuovi gli URI sbagliati
+   - Lascia SOLO: https://app.base44.com/api/apps/auth/callback
+   - Clicca "SAVE"
+
+7. Conferma che la modifica è salvata
+
+8. Aspetta 5 minuti e testa su nonamebar.it
+
+================================================================================
+QUALE OPZIONE USARE?
+================================================================================
+
+- OPZIONE 1: Veloce, Comet mi riporta tutto, io do fix preciso
+- OPZIONE 2: Se serve accesso reale al progetto (operazioni complesse)
+- OPZIONE 3: Fix diretto da Comet (più veloce se Comet può farlo)
+
+Consiglio: Prova OPZIONE 1 prima (più veloce)
+Se non basta: OPZIONE 3
+Se serve più controllo: OPZIONE 2
+
+================================================================================
+OUTPUT ATTESO DA COMET (OPZIONE 1)
+================================================================================
+
+Formato della risposta che Comet deve darmi:
+
+---
+CONFIGURAZIONE OAUTH CLIENT - waipro-agency
+
+Numero client OAuth: X
+
+CLIENT PRINCIPALE:
+Nome: [nome del client]
+Client ID: [tutto il client ID]
+Client Secret: [primi 10 caratteri]
+
+Authorized JavaScript origins:
+1. [URI 1]
+2. [URI 2]
+...
+
+Authorized redirect URIs:
+1. [URI 1]
+2. [URI 2]
+...
+
+VERIFICA:
+- Redirect URI Base44 presente? [SI/NO]
+- Se SI, quale URI esatto: [copia-incolla]
+---
+
+Con queste info posso dirti ESATTAMENTE cosa manca o è sbagliato!
+
+================================================================================

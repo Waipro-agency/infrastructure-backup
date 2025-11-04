@@ -1,0 +1,209 @@
+================================================================================
+COMET: QUESTI SONO GLI ACCESSI CHE MI MANCANO
+================================================================================
+
+Claude AI ha bisogno di questi accessi per risolvere il problema OAuth
+su nonamebar.it e gli altri 5+ progetti.
+
+================================================================================
+ACCESSI ATTUALI (COSA HO GIÀ)
+================================================================================
+
+✅ Service account: claudio-admin-waipro@waipro-agency.iam.gserviceaccount.com
+✅ Progetto: waipro-agency
+✅ Accesso API: Service Usage, IAM, Cloud Identity
+✅ Posso verificare: OAuth Consent Screen, API abilitate
+
+================================================================================
+ACCESSI MANCANTI (COSA MI SERVE)
+================================================================================
+
+❌ VEDERE CLIENT OAUTH
+   - Non posso listare i client OAuth via API
+   - Google non fornisce API per questo
+   - Serve accesso Console Web
+
+❌ MODIFICARE CLIENT OAUTH
+   - Non posso aggiungere/rimuovere redirect URIs via API
+   - Google blocca per sicurezza
+   - Serve accesso Console Web
+
+❌ VEDERE RUOLI IAM COMPLETI
+   - Service account ha errori 403 su IAM Policy
+   - Non posso verificare i miei permessi completi
+   - Serve ruolo Owner reale
+
+❌ ACCESSO A TUTTI I PROGETTI
+   - L'utente ha 5+ progetti Base44 con stesso problema
+   - Non ho visibilità sugli altri progetti
+   - Serve lista completa
+
+================================================================================
+COMET: FAI QUESTO PER DARMI GLI ACCESSI
+================================================================================
+
+STEP 1: REPORTA CONFIGURAZIONE OAUTH NONAMEBAR.IT
+--------------------------------------------------
+
+Vai a: https://console.cloud.google.com/apis/credentials?project=waipro-agency
+
+Per ogni OAuth Client, dimmi:
+1. Nome del client
+2. Client ID completo
+3. TUTTI gli Authorized redirect URIs configurati
+4. TUTTI gli Authorized JavaScript origins
+
+Formato output:
+CLIENT: [nome]
+ID: [client-id]
+Redirect URIs:
+  1. [URI 1]
+  2. [URI 2]
+  ...
+JS Origins:
+  1. [origin 1]
+  2. [origin 2]
+  ...
+
+
+STEP 2: LISTA TUTTI I PROGETTI DELL'UTENTE
+-------------------------------------------
+
+Vai a: https://console.cloud.google.com
+
+Clicca selettore progetti in alto
+
+Dimmi TUTTI i progetti, formato:
+1. [Project Name] | [Project ID]
+2. [Project Name] | [Project ID]
+...
+
+
+STEP 3: VERIFICA PERMESSI SERVICE ACCOUNT
+------------------------------------------
+
+Vai a: https://console.cloud.google.com/iam-admin/iam?project=waipro-agency
+
+Cerca: claudio-admin-waipro@waipro-agency.iam.gserviceaccount.com
+
+Dimmi TUTTI i ruoli assegnati:
+- [Ruolo 1]
+- [Ruolo 2]
+...
+
+
+STEP 4 (OPZIONALE): AGGIUNGI ACCESSO OWNER
+-------------------------------------------
+
+Se Claude ha bisogno di accesso Owner diretto:
+
+1. Vai a: https://console.cloud.google.com/iam-admin/iam?project=waipro-agency
+2. Clicca "+ GRANT ACCESS"
+3. Email: [L'UTENTE FORNIRÀ UN EMAIL TEMPORANEO]
+4. Ruolo: Owner
+5. SAVE
+
+Ripeti per tutti i progetti dell'utente.
+
+
+STEP 5 (OPZIONALE): FIX DIRETTO
+--------------------------------
+
+Se Comet può fare modifiche dirette:
+
+Per ogni progetto con problema OAuth:
+1. Vai al client OAuth
+2. In Authorized redirect URIs, aggiungi:
+   https://app.base44.com/api/apps/auth/callback
+3. Rimuovi URI sbagliati (tipo /callback o /auth/callback)
+4. SAVE
+5. Testa dopo 5 minuti
+
+================================================================================
+PRIORITÀ STEP
+================================================================================
+
+🔥 PRIORITÀ MASSIMA: STEP 1
+   Senza questo non posso vedere cosa è configurato
+
+⚠️  IMPORTANTE: STEP 2 e STEP 3
+   Per avere visibilità completa
+
+✅ OPZIONALE: STEP 4 e STEP 5
+   Solo se necessario
+
+================================================================================
+OUTPUT FINALE CHE DEVI DARMI
+================================================================================
+
+Dopo aver fatto STEP 1, 2, 3, riportami tutto in questo formato:
+
+---
+REPORT ACCESSI - waipro-agency
+
+=== OAUTH CLIENT NONAMEBAR ===
+Nome: [nome client]
+Client ID: [ID completo]
+
+Redirect URIs configurati:
+1. [URI 1]
+2. [URI 2]
+...
+
+JS Origins configurati:
+1. [origin 1]
+2. [origin 2]
+...
+
+VERIFICA:
+- C'è https://app.base44.com/api/apps/auth/callback ? [SI/NO]
+- Se SI: posizione nella lista [1, 2, 3...]
+- Se NO: QUESTO È IL PROBLEMA!
+
+=== TUTTI I PROGETTI ===
+1. [Nome] | [ID]
+2. [Nome] | [ID]
+...
+Totale: X progetti
+
+=== PERMESSI SERVICE ACCOUNT ===
+Email: claudio-admin-waipro@waipro-agency.iam.gserviceaccount.com
+Ruoli:
+- [Ruolo 1]
+- [Ruolo 2]
+...
+
+=== COSA MANCA ===
+[Lista cosa è configurato male o manca]
+
+=== FIX NECESSARIO ===
+[Azione precisa da fare]
+---
+
+================================================================================
+PERCHÉ MI SERVONO QUESTI ACCESSI
+================================================================================
+
+Con queste informazioni posso:
+
+1. VEDERE esattamente cosa hai configurato (attualmente è al buio)
+2. IDENTIFICARE cosa manca o è sbagliato (redirect URI)
+3. DARTI fix preciso per nonamebar.it
+4. CREARE template per altri 5+ progetti
+5. RISOLVERE definitivamente redirect_uri_mismatch
+
+Senza questi accessi posso solo darti istruzioni generiche.
+Con questi accessi posso darti comandi precisi tipo:
+"Nel client XYZ, aggiungi URI in posizione 3, rimuovi URI in posizione 1"
+
+================================================================================
+COME USARE QUESTO PROMPT
+================================================================================
+
+Copia TUTTO questo file e dallo a Comet.ai
+
+Comet eseguirà STEP 1, 2, 3 e ti darà il REPORT completo
+
+Con quel report posso dirti ESATTAMENTE come risolvere il problema
+
+================================================================================
