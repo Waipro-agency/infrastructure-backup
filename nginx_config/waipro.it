@@ -1,0 +1,152 @@
+# Nginx Configuration for waipro.it Reverse Proxy
+# Version: 1.0
+# Date: 2025-11-04
+# Server: 72.61.158.55
+
+# Redirect HTTP to HTTPS
+server {
+    listen 80;
+    listen [::]:80;
+    server_name waipro.it www.waipro.it api.waipro.it n8n.waipro.it;
+
+    # Certbot challenge
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+    }
+
+    # Redirect all other traffic to HTTPS
+    location / {
+        return 301 https://$server_name$request_uri;
+    }
+}
+
+# Main domain - waipro.it
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name waipro.it www.waipro.it;
+
+    # SSL Configuration (will be added by Certbot)
+    ssl_certificate /etc/letsencrypt/live/waipro.it/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/waipro.it/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "no-referrer-when-downgrade" always;
+
+    # Logs
+    access_log /var/log/nginx/waipro_access.log;
+    error_log /var/log/nginx/waipro_error.log;
+
+    # Root location - Static website or redirect
+    location / {
+        root /var/www/waipro.it;
+        index index.html index.htm;
+        try_files $uri $uri/ =404;
+    }
+}
+
+# API subdomain - api.waipro.it
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name api.waipro.it;
+
+    # SSL Configuration
+    ssl_certificate /etc/letsencrypt/live/api.waipro.it/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.waipro.it/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+
+    # Logs
+    access_log /var/log/nginx/api_waipro_access.log;
+    error_log /var/log/nginx/api_waipro_error.log;
+
+    # Reverse proxy to FastAPI (Digital Agency Swarm)
+    location / {
+        proxy_pass http://localhost:8000;
+        proxy_http_version 1.1;
+
+        # Headers
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # WebSocket support
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        # Timeouts
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+    }
+
+    # API Documentation
+    location /docs {
+        proxy_pass http://localhost:8000/docs;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# N8N subdomain - n8n.waipro.it
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name n8n.waipro.it;
+
+    # SSL Configuration
+    ssl_certificate /etc/letsencrypt/live/n8n.waipro.it/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/n8n.waipro.it/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+
+    # Logs
+    access_log /var/log/nginx/n8n_waipro_access.log;
+    error_log /var/log/nginx/n8n_waipro_error.log;
+
+    # Reverse proxy to N8N
+    location / {
+        proxy_pass http://localhost:5678;
+        proxy_http_version 1.1;
+
+        # Headers
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # WebSocket support (required for N8N)
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        # Timeouts (N8N può richiedere tempi più lunghi)
+        proxy_connect_timeout 300s;
+        proxy_send_timeout 300s;
+        proxy_read_timeout 300s;
+
+        # Buffer settings for large webhooks
+        proxy_buffering off;
+        proxy_request_buffering off;
+        client_max_body_size 50M;
+    }
+}
