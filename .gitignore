@@ -1,0 +1,27 @@
+# Google Cloud credentials
+*.json
+gcp-service-account.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Secrets and credentials
+*.key
+*.pem
+*.p12
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
