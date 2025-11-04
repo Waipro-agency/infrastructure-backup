@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "waipro-integration": {
+      "command": "python3",
+      "args": [
+        "/home/user/infrastructure-backup/google_cloud_integration/mcp_server_waipro.py"
+      ],
+      "env": {
+        "WAIPRO_WORKSPACE": "/home/user/infrastructure-backup",
+        "WAIPRO_VPS": "72.61.158.55"
+      },
+      "disabled": false
+    }
+  }
+}
