@@ -1,0 +1,26 @@
+PROMPT PER COMET.AI - CONFIGURAZIONE OAUTH NONAMEBAR.IT
+
+Ciao Comet, devi configurare Google OAuth per nonamebar.it.
+
+TASK: Crea OAuth 2.0 Client nel progetto waipro-agency
+
+URL: https://console.cloud.google.com/apis/credentials?project=waipro-agency
+
+STEP:
+1. Clicca "+ CREATE CREDENTIALS" > "OAuth client ID"
+2. Type: "Web application"
+3. Name: "nonamebar.it - Base44"
+4. Authorized JavaScript origins:
+   - https://nonamebar.it
+   - https://app.base44.com
+5. Authorized redirect URIs:
+   - https://app.base44.com/api/apps/auth/callback
+6. Clicca "CREATE"
+7. Copia Client ID e Client Secret dal popup
+8. Dammi i due valori
+
+FORMATO ATTESO:
+Client ID: xxx-xxx.apps.googleusercontent.com
+Client Secret: GOCSPX-xxxxx
+
+Grazie!
